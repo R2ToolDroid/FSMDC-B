@@ -51,8 +51,8 @@ const ServoSettings servoSettings[] PROGMEM = {
     //* PIN, closed 0, Open 1, GRoupe//
     
     { 1,  2100,  1200, GROUP_DOORS|PANEL_GROUP_1|BIG_DOOR_GROUP },  /* 0: DOOR_LEFT */
-    { 2,  2000,  1000, GROUP_DOORS|PANEL_GROUP_2},  /* 1: DOOR_DATAPANEL */
-    { 3,  600, 2000, GROUP_DOORS|PANEL_GROUP_3},  /* 2: DOOR_CHARGEBAY  */
+    { 2,  2100,  1000, GROUP_DOORS|PANEL_GROUP_2},  /* 1: DOOR_DATAPANEL */
+    { 3,  900, 2000, GROUP_DOORS|PANEL_GROUP_3},  /* 2: DOOR_CHARGEBAY  */
     { 4,  2000, 1100, GROUP_DOORS|PANEL_GROUP_4},   /* 3: DOOR_MINI */
     { 5,  1000, 2100, GROUP_DOORS|PANEL_GROUP_5|BIG_DOOR_GROUP },    /* 4: DOOR_RIGHT */
     { 6,  600, 2500, 0 },             /* 5: UPPER_ARM */
