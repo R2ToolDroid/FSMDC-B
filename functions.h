@@ -93,7 +93,7 @@ void resetSequence()
     CPUArmDown();
    // FireIn();
     //FireStop();
-   
+   dataPanel.setSequence(DataPanel::kDisabled);
    DEBUG_PRINTLN("reset.OK"); 
 }
 

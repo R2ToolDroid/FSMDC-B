@@ -1,4 +1,4 @@
-//#define USE_DEBUG 
+#define USE_DEBUG 
 //#define USE_SERVO_DEBUG
 //#define USE_VERBOSE_SERVO_DEBUG
 #include "ReelTwo.h"
@@ -7,6 +7,12 @@
 #include "ServoDispatchPCA9685.h"
 #include "ServoSequencer.h"
 #include "core/Marcduino.h"
+#include "body/DataPanel.h"
+
+#define CBI_DATAIN_PIN 8 ////A1  //2
+#define CBI_CLOCK_PIN  9 ////A2 //4
+#define CBI_LOAD_PIN   10 ////A3  //8
+
 
 #define COMMAND_SERIAL Serial1 //   Serial1 for LIVE   Serial  for USB Command
 
@@ -81,13 +87,13 @@ static const ServoSequence SeqPanelAllCloseLong PROGMEM =
     { 2000,   B00000000, B00000000, B00000000, B00000000 },
 };
 
-
+LedControlMAX7221<1> ledChain(CBI_DATAIN_PIN, CBI_CLOCK_PIN, CBI_LOAD_PIN);
+DataPanel dataPanel(ledChain);
 
 ServoDispatchPCA9685<SizeOfArray(servoSettings)> servoDispatch(servoSettings);
 ServoSequencer servoSequencer(servoDispatch);
 AnimationPlayer player(servoSequencer);
 MarcduinoSerial<> marcduinoSerial(COMMAND_SERIAL, player);
-
 
 
 int ledState = LOW;   
@@ -125,7 +131,7 @@ void setup()
     REELTWO_READY();
     Wire.begin();
     
-    Serial.begin(115200);  //delete for Nano 328
+    //Serial.begin(115200);  //delete for Nano 328
     
     COMMAND_SERIAL.begin(9600);
     SetupEvent::ready();
@@ -133,7 +139,9 @@ void setup()
     resetSequence();
     
     DEBUG_PRINTLN("ready.."); 
-
+    
+    dataPanel.setSequence(DataPanel::kDisabled);
+    
     //SEQUENCE_PLAY_ONCE(servoSequencer, sMySeqPanelAllOpen, GROUP_DOORS);
     //servoDispatch.moveServosTo(GROUP_DOORS, 150, 100, 1.0); // completely open
     //servoDispatch.moveToPulse(FIRE, 150, 100, 800); // Einzenelner Servo

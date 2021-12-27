@@ -50,6 +50,7 @@ MARCDUINO_ACTION(OpenPanelGroup1, #OP01, ({
 MARCDUINO_ACTION(OpenPanelGroup2, #OP02, ({
     //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DOOR_DATAPANEL);
     servoDispatch.setServoEasingMethod(DOOR_DATAPANEL, Easing::CircularEaseIn);
+    dataPanel.setSequence(DataPanel::kNormal);
     servoDispatch.moveTo(DOOR_DATAPANEL, 150, 500, 1.0); // completely open
 }))
 
@@ -92,6 +93,7 @@ MARCDUINO_ACTION(ClosePanelGroup2, #CL02, ({
     //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllClose, DOOR_DATAPANEL);
     servoDispatch.setServoEasingMethod(DOOR_DATAPANEL, Easing::CircularEaseIn);
     servoDispatch.moveTo(DOOR_DATAPANEL, 150, 500, 0.0); // completely close
+    dataPanel.setSequence(DataPanel::kDisabled);
 }))
 
 ////////////////
