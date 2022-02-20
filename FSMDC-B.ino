@@ -8,13 +8,19 @@
 #include "ServoSequencer.h"
 #include "core/Marcduino.h"
 #include "body/DataPanel.h"
+#include "body/ChargeBayIndicator.h"
+/*  NANO on Board
+#define CBI_DATAIN_PIN 8 ////A1  //8
+#define CBI_CLOCK_PIN  9 ////A2 //9
+#define CBI_LOAD_PIN   10 ////A3  //10
+*/
+//  Test
+#define CBI_DATAIN_PIN A1  //8
+#define CBI_CLOCK_PIN  A2 //9
+#define CBI_LOAD_PIN   A3  //10
 
-#define CBI_DATAIN_PIN 8 ////A1  //2
-#define CBI_CLOCK_PIN  9 ////A2 //4
-#define CBI_LOAD_PIN   10 ////A3  //8
 
-
-#define COMMAND_SERIAL Serial1 //   Serial1 for LIVE   Serial  for USB Command
+#define COMMAND_SERIAL Serial //   Serial1 for LIVE   Serial  for USB Command
 
 #define GROUP_DOORS      0x000F
 
@@ -88,6 +94,8 @@ static const ServoSequence SeqPanelAllCloseLong PROGMEM =
 };
 
 LedControlMAX7221<1> ledChain(CBI_DATAIN_PIN, CBI_CLOCK_PIN, CBI_LOAD_PIN);
+
+ChargeBayIndicator chargeBayIndicator(ledChain);
 DataPanel dataPanel(ledChain);
 
 ServoDispatchPCA9685<SizeOfArray(servoSettings)> servoDispatch(servoSettings);
@@ -140,7 +148,10 @@ void setup()
     
     DEBUG_PRINTLN("ready.."); 
     
-    dataPanel.setSequence(DataPanel::kDisabled);
+    //dataPanel.setSequence(DataPanel::kDisabled);
+
+    dataPanel.setSequence(DataPanel::kNormal);
+   // chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
     
     //SEQUENCE_PLAY_ONCE(servoSequencer, sMySeqPanelAllOpen, GROUP_DOORS);
     //servoDispatch.moveServosTo(GROUP_DOORS, 150, 100, 1.0); // completely open

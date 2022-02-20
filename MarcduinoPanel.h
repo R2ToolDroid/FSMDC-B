@@ -19,7 +19,7 @@ MARCDUINO_ACTION(CloseAllPanelsMD, :CL00, ({
 
 MARCDUINO_ACTION(OpenAllPanels, #OP00, ({
     SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpenLong, GROUP_DOORS);
-    
+    dataPanel.setSequence(DataPanel::kNormal);
    DEBUG_PRINTLN("OPEN ALL"); 
 }))
 
