@@ -39,12 +39,19 @@ MARCDUINO_ACTION(FlutterAllPanels, #OF00, ({
     //dataPanel.setSequence(DataPanel::kNormal);
     //chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
 
-    DO_COMMAND(F(
+    DO_COMMAND_AND_WAIT(F(
       // Charge Bay Indicator flicker for 6s
-        "CB50008\n"
+        "CB20008\n"
         // Data Panel flicker for 6s
-        "DP20008\n"
-    ))
+        "DP20008\n"        
+    ),8000)
+    
+     DO_RESET({
+        dataPanel.setSequence(DataPanel::kDisabled);
+        chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+    })
+    
+    
 }))
 
 ////////////////
