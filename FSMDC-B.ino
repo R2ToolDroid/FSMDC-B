@@ -41,7 +41,7 @@
 #define DRAWER_3     13
 #define DRAWER_4     14
 #define FIRE         15
-#define SPRAY        16
+#define SPRAY        19
 
 
 #define PANEL_GROUP_1      (1L<<14)
@@ -78,7 +78,8 @@ const ServoSettings servoSettings[] PROGMEM = {
     { 14, 2100, 1000, DRAWER_GROUP|DRAWER_GROUP_3 }, /*|13:DRAWER_3 */ 
     { 15, 1900, 1000, DRAWER_GROUP|DRAWER_GROUP_4 }, /* 14:DRAWER_4 */ 
     { 16, 1000, 2000, 0 }, /* 15:FIRE */  
-    { 17, 1500, 1000, 0 }, /* 15:SPRAY */
+    { 17, 1500, 1000, 0 }, /* 16:SPRAY */
+
     
 };
 
@@ -93,7 +94,7 @@ static const ServoSequence SeqPanelAllCloseLong PROGMEM =
     { 2000,   B00000000, B00000000, B00000000, B00000000 },
 };
 
-LedControlMAX7221<1> ledChain(CBI_DATAIN_PIN, CBI_CLOCK_PIN, CBI_LOAD_PIN);
+LedControlMAX7221<2> ledChain(CBI_DATAIN_PIN, CBI_CLOCK_PIN, CBI_LOAD_PIN);
 
 ChargeBayIndicator chargeBayIndicator(ledChain);
 DataPanel dataPanel(ledChain);
@@ -119,11 +120,25 @@ byte LOCK = false;   //Lock all Doorfunktions
 
 
 MARCDUINO_ACTION(FlutterPanelTest, test, ({
-    SEQUENCE_PLAY_ONCE_VARSPEED(servoSequencer, SeqPanelAllFlutter, PANELS_MASK , 10, 50);
-    //OpenUpperArm();
-    //OpenLowerArm();
+
+  dataPanel.setSequence(DataPanel::kFlicker);
+   
+  chargeBayIndicator.setSequence(ChargeBayIndicator::kCharging );
 }))
 
+/*
+ kNormal = 0, kDisabled = 1, kFlicker = 2
+
+0 kNormal   
+
+1 kDisabled   
+2 kFlicker  
+3 kNaboo  
+4 kCharging   
+5 kBlink  
+6 kHeart  
+7 kVCCOnly 
+*/
 
 
 // Marcduino command starting with '*RT' followed by Reeltwo command
@@ -143,15 +158,16 @@ void setup()
     
     COMMAND_SERIAL.begin(9600);
     SetupEvent::ready();
-    Serial.print("ready..");
+    //Serial.print("ready..");
     resetSequence();
     
     DEBUG_PRINTLN("ready.."); 
     
-    //dataPanel.setSequence(DataPanel::kDisabled);
-
-    dataPanel.setSequence(DataPanel::kNormal);
-   // chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
+    dataPanel.setSequence(DataPanel::kDisabled);
+    chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled);
+    
+    //dataPanel.setSequence(DataPanel::kNormal);
+    //chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
     
     //SEQUENCE_PLAY_ONCE(servoSequencer, sMySeqPanelAllOpen, GROUP_DOORS);
     //servoDispatch.moveServosTo(GROUP_DOORS, 150, 100, 1.0); // completely open

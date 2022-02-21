@@ -20,11 +20,14 @@ MARCDUINO_ACTION(CloseAllPanelsMD, :CL00, ({
 MARCDUINO_ACTION(OpenAllPanels, #OP00, ({
     SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpenLong, GROUP_DOORS);
     dataPanel.setSequence(DataPanel::kNormal);
+    chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
    DEBUG_PRINTLN("OPEN ALL"); 
 }))
 
 MARCDUINO_ACTION(OpenAllPanelsMD, :OP00, ({
     SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpenLong, GROUP_DOORS);
+    dataPanel.setSequence(DataPanel::kNormal);
+    chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
     
    DEBUG_PRINTLN("OPEN ALL"); 
 }))
@@ -33,6 +36,15 @@ MARCDUINO_ACTION(OpenAllPanelsMD, :OP00, ({
 
 MARCDUINO_ACTION(FlutterAllPanels, #OF00, ({
     SEQUENCE_PLAY_ONCE_VARSPEED(servoSequencer, SeqPanelAllFlutter, GROUP_DOORS, 10, 50);
+    //dataPanel.setSequence(DataPanel::kNormal);
+    //chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
+
+    DO_COMMAND(F(
+      // Charge Bay Indicator flicker for 6s
+        "CB50008\n"
+        // Data Panel flicker for 6s
+        "DP20008\n"
+    ))
 }))
 
 ////////////////
@@ -58,6 +70,7 @@ MARCDUINO_ACTION(OpenPanelGroup2, #OP02, ({
 
 MARCDUINO_ACTION(OpenPanelGroup3, #OP03, ({
     //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DOOR_CHARGEBAY);
+    chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
     servoDispatch.setServoEasingMethod(DOOR_CHARGEBAY, Easing::CircularEaseIn);
     servoDispatch.moveTo(DOOR_CHARGEBAY, 150, 500, 1.0); // completely open
 }))
@@ -102,6 +115,8 @@ MARCDUINO_ACTION(ClosePanelGroup3, #CL03, ({
     //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllClose, DOOR_CHARGEBAY);
     servoDispatch.setServoEasingMethod(DOOR_CHARGEBAY, Easing::CircularEaseIn);
     servoDispatch.moveTo(DOOR_CHARGEBAY, 150, 500, 0.0); // completely close
+    
+    chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled);
 }))
 
 ////////////////
@@ -278,6 +293,8 @@ MARCDUINO_ACTION(FlutterPanelGroup2, #OF02, ({
 ////////////////
 
 MARCDUINO_ACTION(FlutterPanelGroup3, #OF03, ({
+
+  
     SEQUENCE_PLAY_ONCE_VARSPEED(servoSequencer, SeqPanelAllFlutter, PANEL_GROUP_3 , 10, 50);
 }))
 
