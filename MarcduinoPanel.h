@@ -82,6 +82,14 @@ MARCDUINO_ACTION(OpenPanelGroup3, #OP03, ({
     servoDispatch.moveTo(DOOR_CHARGEBAY, 150, 500, 1.0); // completely open
 }))
 
+
+MARCDUINO_ACTION(OpenPanelAndHeard, #HEARD, ({
+    //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DOOR_CHARGEBAY);
+    chargeBayIndicator.setSequence(ChargeBayIndicator::kHeart);
+    servoDispatch.setServoEasingMethod(DOOR_CHARGEBAY, Easing::CircularEaseIn);
+    servoDispatch.moveTo(DOOR_CHARGEBAY, 150, 500, 1.0); // completely open
+}))
+
 ////////////////
 
 MARCDUINO_ACTION(OpenPanelGroup4, #OP04, ({

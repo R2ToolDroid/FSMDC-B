@@ -101,12 +101,23 @@ MARCDUINO_ANIMATION(BeepCantinaSequence, :SE05)
     DO_START()
     DO_MARCDUINO(F("$c"))
     // Wait 1 second
-    DO_COMMAND(F(
-        // Fire logics
-        "LE84115\n"
-        // Holo Short Circuit
-        "HPA002|15\n"))
+    
     DO_SEQUENCE(SeqPanelMarchingAnts, GROUP_DOORS)
+    
+    DO_COMMAND_AND_WAIT(F(
+      // Charge Bay Indicator flicker for 6s
+        "CB60008\n"
+        // Data Panel flicker for 6s
+        "DP00008\n"        
+    ),8000)
+    
+     DO_RESET({
+        dataPanel.setSequence(DataPanel::kDisabled);
+        chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+    })
+
+
+
     
     DO_END()
 }
