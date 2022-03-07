@@ -1,5 +1,5 @@
 #define USE_DEBUG 
-//#define USE_SERVO_DEBUG
+#define USE_SERVO_DEBUG
 //#define USE_VERBOSE_SERVO_DEBUG
 #include "ReelTwo.h"
 #include "core/Animation.h"
@@ -20,7 +20,7 @@
 #define CBI_LOAD_PIN   A3  //10
 
 
-#define COMMAND_SERIAL Serial //   Serial1 for LIVE   Serial  for USB Command
+#define COMMAND_SERIAL Serial1 //   Serial1 for LIVE   Serial  for USB Command
 
 #define GROUP_DOORS      0x000F
 
