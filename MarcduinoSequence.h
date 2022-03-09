@@ -14,7 +14,8 @@ MARCDUINO_ACTION(ScreamSequence, :SE01, ({
     //CommandEvent::process("LE10003");
    // Marcduino::send(F("$S"));
       
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpenClose, GROUP_DOORS);
+    //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpenClose, GROUP_DOORS);
+    DO_SEQUENCE(SeqPanelAllOpenClose, GROUP_DOORS)
    
     DO_COMMAND_AND_WAIT(F(
       // Charge Bay Indicator flicker for 6s
@@ -36,7 +37,8 @@ MARCDUINO_ACTION(ScreamSequence, :SE01, ({
 
 MARCDUINO_ACTION(WaveSequence, :SE02, ({
       
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelWave, GROUP_DOORS);
+    //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelWave, GROUP_DOORS);
+    DO_SEQUENCE(SeqPanelWave, GROUP_DOORS)
 
     DO_COMMAND_AND_WAIT(F(
       // Charge Bay Indicator flicker for 6s
@@ -56,7 +58,8 @@ MARCDUINO_ACTION(WaveSequence, :SE02, ({
 
 MARCDUINO_ACTION(SmirkWaveSequence, :SE03, ({
    // Marcduino::send(F("$34"));
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelWaveFast, GROUP_DOORS);
+    //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelWaveFast, GROUP_DOORS);
+    DO_SEQUENCE(SeqPanelWaveFast, GROUP_DOORS)
 
     DO_COMMAND_AND_WAIT(F(
       // Charge Bay Indicator flicker for 6s
@@ -77,7 +80,9 @@ MARCDUINO_ACTION(SmirkWaveSequence, :SE03, ({
 
 MARCDUINO_ACTION(OpenCloseWaveSequence, :SE04, ({
     //Marcduino::send(F("$36"));
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelOpenCloseWave, GROUP_DOORS);
+    //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelOpenCloseWave, GROUP_DOORS);
+
+    DO_SEQUENCE(SeqPanelOpenCloseWave, GROUP_DOORS)
     
     DO_COMMAND_AND_WAIT(F(
       // Charge Bay Indicator flicker for 6s
