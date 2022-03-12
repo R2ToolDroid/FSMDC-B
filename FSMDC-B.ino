@@ -127,8 +127,10 @@ MARCDUINO_ACTION(FlutterPanelTest, test, ({
 }))
 
 /*
+ Data Panel
  kNormal = 0, kDisabled = 1, kFlicker = 2
 
+  Charge Bay
 0 kNormal   
 
 1 kDisabled   

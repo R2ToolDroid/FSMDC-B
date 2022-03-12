@@ -34,10 +34,11 @@ MARCDUINO_ACTION(OpenAllPanelsMD, :OP00, ({
 
 ////////////////
 
-MARCDUINO_ACTION(FlutterAllPanels, #OF00, ({
-    SEQUENCE_PLAY_ONCE_VARSPEED(servoSequencer, SeqPanelAllFlutter, GROUP_DOORS, 10, 50);
-    //dataPanel.setSequence(DataPanel::kNormal);
-    //chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
+MARCDUINO_ANIMATION(FlutterAllPanels, #OF00){
+    //SEQUENCE_PLAY_ONCE_VARSPEED(servoSequencer, SeqPanelAllFlutter, GROUP_DOORS, 10, 50);
+    DO_START()
+    
+    DO_SEQUENCE_VARSPEED(SeqPanelAllFlutter, GROUP_DOORS, 10, 50)
 
     DO_COMMAND_AND_WAIT(F(
       // Charge Bay Indicator flicker for 6s
@@ -50,9 +51,9 @@ MARCDUINO_ACTION(FlutterAllPanels, #OF00, ({
         dataPanel.setSequence(DataPanel::kDisabled);
         chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
     })
+    DO_END()
     
-    
-}))
+}
 
 ////////////////
 
