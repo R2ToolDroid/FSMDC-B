@@ -19,21 +19,41 @@ MARCDUINO_ACTION(CloseAllPanelsMD, :CL00, ({
 
 MARCDUINO_ACTION(OpenAllPanels, #OP00, ({
     SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpenLong, GROUP_DOORS);
-    
+    dataPanel.setSequence(DataPanel::kNormal);
+    chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
    DEBUG_PRINTLN("OPEN ALL"); 
 }))
 
 MARCDUINO_ACTION(OpenAllPanelsMD, :OP00, ({
     SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpenLong, GROUP_DOORS);
+    dataPanel.setSequence(DataPanel::kNormal);
+    chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
     
    DEBUG_PRINTLN("OPEN ALL"); 
 }))
 
 ////////////////
 
-MARCDUINO_ACTION(FlutterAllPanels, #OF00, ({
-    SEQUENCE_PLAY_ONCE_VARSPEED(servoSequencer, SeqPanelAllFlutter, GROUP_DOORS, 10, 50);
-}))
+MARCDUINO_ANIMATION(FlutterAllPanels, #OF00){
+    //SEQUENCE_PLAY_ONCE_VARSPEED(servoSequencer, SeqPanelAllFlutter, GROUP_DOORS, 10, 50);
+    DO_START()
+    
+    DO_SEQUENCE_VARSPEED(SeqPanelAllFlutter, GROUP_DOORS, 10, 50)
+
+    DO_COMMAND_AND_WAIT(F(
+      // Charge Bay Indicator flicker for 6s
+        "CB20008\n"
+        // Data Panel flicker for 6s
+        "DP20008\n"        
+    ),8000)
+    
+     DO_RESET({
+        dataPanel.setSequence(DataPanel::kDisabled);
+        chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+    })
+    DO_END()
+    
+}
 
 ////////////////
 
@@ -50,6 +70,7 @@ MARCDUINO_ACTION(OpenPanelGroup1, #OP01, ({
 MARCDUINO_ACTION(OpenPanelGroup2, #OP02, ({
     //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DOOR_DATAPANEL);
     servoDispatch.setServoEasingMethod(DOOR_DATAPANEL, Easing::CircularEaseIn);
+    dataPanel.setSequence(DataPanel::kNormal);
     servoDispatch.moveTo(DOOR_DATAPANEL, 150, 500, 1.0); // completely open
 }))
 
@@ -57,6 +78,15 @@ MARCDUINO_ACTION(OpenPanelGroup2, #OP02, ({
 
 MARCDUINO_ACTION(OpenPanelGroup3, #OP03, ({
     //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DOOR_CHARGEBAY);
+    chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
+    servoDispatch.setServoEasingMethod(DOOR_CHARGEBAY, Easing::CircularEaseIn);
+    servoDispatch.moveTo(DOOR_CHARGEBAY, 150, 500, 1.0); // completely open
+}))
+
+
+MARCDUINO_ACTION(OpenPanelAndHeard, #HEARD, ({
+    //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DOOR_CHARGEBAY);
+    chargeBayIndicator.setSequence(ChargeBayIndicator::kHeart);
     servoDispatch.setServoEasingMethod(DOOR_CHARGEBAY, Easing::CircularEaseIn);
     servoDispatch.moveTo(DOOR_CHARGEBAY, 150, 500, 1.0); // completely open
 }))
@@ -92,6 +122,7 @@ MARCDUINO_ACTION(ClosePanelGroup2, #CL02, ({
     //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllClose, DOOR_DATAPANEL);
     servoDispatch.setServoEasingMethod(DOOR_DATAPANEL, Easing::CircularEaseIn);
     servoDispatch.moveTo(DOOR_DATAPANEL, 150, 500, 0.0); // completely close
+    dataPanel.setSequence(DataPanel::kDisabled);
 }))
 
 ////////////////
@@ -100,6 +131,8 @@ MARCDUINO_ACTION(ClosePanelGroup3, #CL03, ({
     //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllClose, DOOR_CHARGEBAY);
     servoDispatch.setServoEasingMethod(DOOR_CHARGEBAY, Easing::CircularEaseIn);
     servoDispatch.moveTo(DOOR_CHARGEBAY, 150, 500, 0.0); // completely close
+    
+    chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled);
 }))
 
 ////////////////
@@ -276,6 +309,8 @@ MARCDUINO_ACTION(FlutterPanelGroup2, #OF02, ({
 ////////////////
 
 MARCDUINO_ACTION(FlutterPanelGroup3, #OF03, ({
+
+  
     SEQUENCE_PLAY_ONCE_VARSPEED(servoSequencer, SeqPanelAllFlutter, PANEL_GROUP_3 , 10, 50);
 }))
 

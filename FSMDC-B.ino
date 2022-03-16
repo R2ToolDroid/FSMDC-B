@@ -7,6 +7,18 @@
 #include "ServoDispatchPCA9685.h"
 #include "ServoSequencer.h"
 #include "core/Marcduino.h"
+#include "body/DataPanel.h"
+#include "body/ChargeBayIndicator.h"
+/*  NANO on Board
+#define CBI_DATAIN_PIN 8 ////A1  //8
+#define CBI_CLOCK_PIN  9 ////A2 //9
+#define CBI_LOAD_PIN   10 ////A3  //10
+*/
+//  Test
+#define CBI_DATAIN_PIN A1  //8
+#define CBI_CLOCK_PIN  A2 //9
+#define CBI_LOAD_PIN   A3  //10
+
 
 #define COMMAND_SERIAL Serial1 //   Serial1 for LIVE   Serial  for USB Command
 
@@ -29,7 +41,7 @@
 #define DRAWER_3     13
 #define DRAWER_4     14
 #define FIRE         15
-#define SPRAY        16
+#define SPRAY        19
 
 
 #define PANEL_GROUP_1      (1L<<14)
@@ -50,9 +62,9 @@
 const ServoSettings servoSettings[] PROGMEM = {
     //* PIN, closed 0, Open 1, GRoupe//
     
-    { 1,  2100,  1200, GROUP_DOORS|PANEL_GROUP_1|BIG_DOOR_GROUP },  /* 0: DOOR_LEFT */
+    { 1,  2000,  1200, GROUP_DOORS|PANEL_GROUP_1|BIG_DOOR_GROUP },  /* 0: DOOR_LEFT */
     { 2,  2100,  1000, GROUP_DOORS|PANEL_GROUP_2},  /* 1: DOOR_DATAPANEL */
-    { 3,  900, 2000, GROUP_DOORS|PANEL_GROUP_3},  /* 2: DOOR_CHARGEBAY  */
+    { 3,  600, 2000, GROUP_DOORS|PANEL_GROUP_3},  /* 2: DOOR_CHARGEBAY  */
     { 4,  2000, 1100, GROUP_DOORS|PANEL_GROUP_4},   /* 3: DOOR_MINI */
     { 5,  1000, 2100, GROUP_DOORS|PANEL_GROUP_5|BIG_DOOR_GROUP },    /* 4: DOOR_RIGHT */
     { 6,  600, 2500, 0 },             /* 5: UPPER_ARM */
@@ -66,7 +78,8 @@ const ServoSettings servoSettings[] PROGMEM = {
     { 14, 2100, 1000, DRAWER_GROUP|DRAWER_GROUP_3 }, /*|13:DRAWER_3 */ 
     { 15, 1900, 1000, DRAWER_GROUP|DRAWER_GROUP_4 }, /* 14:DRAWER_4 */ 
     { 16, 1000, 2000, 0 }, /* 15:FIRE */  
-    { 17, 1500, 1000, 0 }, /* 15:SPRAY */
+    { 17, 1500, 1000, 0 }, /* 16:SPRAY */
+
     
 };
 
@@ -81,13 +94,15 @@ static const ServoSequence SeqPanelAllCloseLong PROGMEM =
     { 2000,   B00000000, B00000000, B00000000, B00000000 },
 };
 
+LedControlMAX7221<2> ledChain(CBI_DATAIN_PIN, CBI_CLOCK_PIN, CBI_LOAD_PIN);
 
+ChargeBayIndicator chargeBayIndicator(ledChain);
+DataPanel dataPanel(ledChain);
 
 ServoDispatchPCA9685<SizeOfArray(servoSettings)> servoDispatch(servoSettings);
 ServoSequencer servoSequencer(servoDispatch);
 AnimationPlayer player(servoSequencer);
 MarcduinoSerial<> marcduinoSerial(COMMAND_SERIAL, player);
-
 
 
 int ledState = LOW;   
@@ -105,11 +120,27 @@ byte LOCK = false;   //Lock all Doorfunktions
 
 
 MARCDUINO_ACTION(FlutterPanelTest, test, ({
-    SEQUENCE_PLAY_ONCE_VARSPEED(servoSequencer, SeqPanelAllFlutter, PANELS_MASK , 10, 50);
-    //OpenUpperArm();
-    //OpenLowerArm();
+
+  dataPanel.setSequence(DataPanel::kFlicker);
+   
+  chargeBayIndicator.setSequence(ChargeBayIndicator::kCharging );
 }))
 
+/*
+ Data Panel
+ kNormal = 0, kDisabled = 1, kFlicker = 2
+
+  Charge Bay
+0 kNormal   
+
+1 kDisabled   
+2 kFlicker  
+3 kNaboo  
+4 kCharging   
+5 kBlink  
+6 kHeart  
+7 kVCCOnly 
+*/
 
 
 // Marcduino command starting with '*RT' followed by Reeltwo command
@@ -125,15 +156,21 @@ void setup()
     REELTWO_READY();
     Wire.begin();
     
-    Serial.begin(115200);  //delete for Nano 328
+    //Serial.begin(115200);  //delete for Nano 328
     
     COMMAND_SERIAL.begin(9600);
     SetupEvent::ready();
-    Serial.print("ready..");
+    //Serial.print("ready..");
     resetSequence();
     
     DEBUG_PRINTLN("ready.."); 
-
+    
+    dataPanel.setSequence(DataPanel::kDisabled);
+    chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled);
+    
+    //dataPanel.setSequence(DataPanel::kNormal);
+    //chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
+    
     //SEQUENCE_PLAY_ONCE(servoSequencer, sMySeqPanelAllOpen, GROUP_DOORS);
     //servoDispatch.moveServosTo(GROUP_DOORS, 150, 100, 1.0); // completely open
     //servoDispatch.moveToPulse(FIRE, 150, 100, 800); // Einzenelner Servo

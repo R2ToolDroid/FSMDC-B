@@ -10,32 +10,97 @@ MARCDUINO_ACTION(StopSequence2, :SE10, ({
 
 ////////////////
 
-MARCDUINO_ACTION(ScreamSequence, :SE01, ({
+MARCDUINO_ANIMATION(ScreamSequence, :SE01){
     //CommandEvent::process("LE10003");
    // Marcduino::send(F("$S"));
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpenClose, GROUP_DOORS);
-}))
+    DO_START()  
+    //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpenClose, GROUP_DOORS);
+    DO_SEQUENCE(SeqPanelAllOpenClose, GROUP_DOORS)
+   
+    DO_COMMAND_AND_WAIT(F(
+      // Charge Bay Indicator flicker for 6s
+        "CB20008\n"
+        // Data Panel flicker for 6s
+        "DP20008\n"        
+    ),8000)
+    
+     DO_RESET({
+        dataPanel.setSequence(DataPanel::kDisabled);
+        chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+    })
+    
+     DO_END() 
+    
+}
 
 ////////////////
 
-MARCDUINO_ACTION(WaveSequence, :SE02, ({
-   // Marcduino::send(F("$213"));
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelWave, GROUP_DOORS);
-}))
+MARCDUINO_ANIMATION(WaveSequence, :SE02){
+
+    DO_START()
+    //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelWave, GROUP_DOORS);
+    DO_SEQUENCE(SeqPanelWave, GROUP_DOORS)
+
+    DO_COMMAND_AND_WAIT(F(
+      // Charge Bay Indicator flicker for 6s
+        "CB10008\n"
+        // Data Panel flicker for 6s
+        "DP10008\n"        
+    ),8000)
+    
+     DO_RESET({
+        dataPanel.setSequence(DataPanel::kDisabled);
+        chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+    })
+    DO_END()
+
+}
 
 ////////////////
 
-MARCDUINO_ACTION(SmirkWaveSequence, :SE03, ({
+MARCDUINO_ANIMATION(SmirkWaveSequence, :SE03){
+  
+    DO_START()
    // Marcduino::send(F("$34"));
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelWaveFast, GROUP_DOORS);
-}))
+    //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelWaveFast, GROUP_DOORS);
+    DO_SEQUENCE(SeqPanelWaveFast, GROUP_DOORS)
+
+    DO_COMMAND_AND_WAIT(F(
+      "CB20000\n"
+      "DP20000\n"      
+    ),8000)
+    
+     DO_RESET({
+       dataPanel.setSequence(DataPanel::kDisabled);
+       chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+    })
+      
+    DO_END()       
+}
 
 ////////////////
 
-MARCDUINO_ACTION(OpenCloseWaveSequence, :SE04, ({
+MARCDUINO_ANIMATION(OpenCloseWaveSequence, :SE04 ){
     //Marcduino::send(F("$36"));
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelOpenCloseWave, GROUP_DOORS);
-}))
+    //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelOpenCloseWave, GROUP_DOORS);
+    DO_START() 
+    DO_SEQUENCE(SeqPanelOpenCloseWave, GROUP_DOORS)
+    
+    DO_COMMAND(F(
+       
+        "CB20000\n"
+        "DP20000\n"
+        
+        ))
+     DO_WAIT_SEC(5)
+    
+     DO_RESET({
+        dataPanel.setSequence(DataPanel::kDisabled);
+        chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+    })
+
+    DO_END()
+}
 
 ////////////////
 
@@ -44,17 +109,21 @@ MARCDUINO_ANIMATION(BeepCantinaSequence, :SE05)
     DO_START()
     DO_MARCDUINO(F("$c"))
     // Wait 1 second
-    DO_COMMAND(F(
-        // Fire logics
-        "LE84115\n"
-        // Holo Short Circuit
-        "HPA002|15\n"))
+    
     DO_SEQUENCE(SeqPanelMarchingAnts, GROUP_DOORS)
-    // Wait 15 seconds
-    DO_WAIT_SEC(15)
-    DO_RESET({
-        resetSequence();
+    
+    DO_COMMAND_AND_WAIT(F(
+      // Charge Bay Indicator flicker for 6s
+        "CB60008\n"
+        // Data Panel flicker for 6s
+        "DP20008\n"        
+    ),8000)
+    
+     DO_RESET({
+        dataPanel.setSequence(DataPanel::kDisabled);
+        chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
     })
+ 
     DO_END()
 }
 
@@ -64,39 +133,23 @@ MARCDUINO_ANIMATION(ShortSequence, :SE06)
 {
     DO_START()
     // Logic engine alarm
-    DO_COMMAND(F("LE105000"))
+    //DO_COMMAND(F("LE105000"))
     // Play scream-3 and wait 500ms
-    DO_MARCDUINO_AND_WAIT(F("$623"), 500);
+    //DO_MARCDUINO_AND_WAIT(F("$623"), 500);
     // Logic engine failure
     DO_COMMAND(F(
-        // Logic engine failure
-        "LE20000\n"
+        // Disco Logics
+        "LE104146\n"
         // Holo Short Circuit
-        "HPA007|7\n"
-        // Fire strip spark for 1000ms
-        "FS11000\n"
-        // Charge Bay Indicator flicker for 6s
-        "CB20006\n"
-        // Data Panel flicker for 6s
-        "DP20006\n"
-        // Smoke on
-        "BMON\n"))
+        "HPA006|46\n"
+
+        "CB20008\n"
+        "DP20008\n"
+        
+        ))
     // Wait 3 seconds
     DO_WAIT_SEC(3)
-    DO_COMMAND(F(
-        // Smoke off
-        "BMOFF\n"
-        // Fire strip off
-        "FSOFF\n"))
-    // Wait 3 seconds
-    DO_WAIT_SEC(3)   
-    DO_COMMAND(F(
-        // Charge Bay Indicator disabled for 8s
-        "CB10008\n"
-        // Data Panel disabled for 8s
-        "DP10008\n"
-        // Holo off
-        "HPA000|0\n"))
+    
     DO_SEQUENCE_VARSPEED(SeqPanelAllOpenCloseLong, GROUP_DOORS, 700, 900);
     // Fake being dead for 8 seconds
     DO_WAIT_SEC(8)
@@ -120,7 +173,12 @@ MARCDUINO_ANIMATION(CantinaSequence, :SE07)
         // Disco Logics
         "LE104146\n"
         // Holo Short Circuit
-        "HPA006|46\n"))
+        "HPA006|46\n"
+
+        "CB50000\n"
+        "DP20000\n"
+        
+        ))
     DO_SEQUENCE(SeqPanelDance, GROUP_DOORS)
     // Wait 46 seconds
     DO_WAIT_SEC(46)
@@ -143,8 +201,8 @@ MARCDUINO_ANIMATION(DiscoSequence, :SE09)
     })
     DO_COMMAND_AND_WAIT(F(
         "HPS1|45\n"
-        "CB10000\n"
-        "DP10000\n"), 45000)
+        "CB50000\n"
+        "DP20000\n"), 45000)
     DO_RESET({
         resetSequence();
     })
@@ -186,15 +244,75 @@ MARCDUINO_ACTION(MarchingAntsPanelSequence, :SE55, ({
 
 ////////////////
 
-MARCDUINO_ACTION(FaintPanelSequence, :SE56, ({
+MARCDUINO_ANIMATION(FaintPanelSequence, :SE56) {
+    DO_START()
     DO_SEQUENCE_VARSPEED(SeqPanelAllOpenCloseLong, GROUP_DOORS, 700, 900);
-}))
+    DO_COMMAND(F(
+        // Disco Logics
+        "LE104146\n"
+        // Holo Short Circuit
+        "HPA006|46\n"
+
+        "CB20000\n"
+        "DP20000\n"
+        
+        ))
+    DO_WAIT_SEC(8)
+    DO_RESET({
+        resetSequence();
+    })
+      
+    DO_END()
+}
 
 ////////////////
 
-MARCDUINO_ACTION(RythmicPanelSequence, :SE57, ({
-    SEQUENCE_PLAY_ONCE_SPEED(servoSequencer, SeqPanelAllOpenCloseLong, GROUP_DOORS, 900);
-}))
+MARCDUINO_ANIMATION(RythmicPanelSequence, :SE57) {
+  
+    //SEQUENCE_PLAY_ONCE_SPEED(servoSequencer, SeqPanelAllOpenCloseLong, GROUP_DOORS, 900);
+
+    DO_START()
+    // Wait 3.5 seconds
+    DO_WAIT_MILLIS(1500)
+    DO_SEQUENCE(SeqPanelDance, GROUP_DOORS)
+    DO_COMMAND(F(
+        // Disco Logics
+        "LE104146\n"
+        // Holo Short Circuit
+        "HPA006|46\n"
+
+        "CB20000\n"
+        "DP20000\n"
+        
+        ))
+    // Wait 34 seconds
+    DO_WAIT_SEC(34)
+    // Smoke on
+   //DO_COMMAND(F("BMON"))
+    DO_COMMAND(F(
+        // Fire strip for 10000ms
+        //"FS210000\n"
+      
+        // Charge Bay Indicator flicker for 5s
+        "CB20010\n"
+        // Data panel flicker for 5 seconds
+        "DP20010\n"))
+    // Wait 8 seconds
+    DO_WAIT_SEC(8)
+    // Smoke off
+    //DO_COMMAND(F("BMOFF"))
+    // Wait 10 seconds
+    DO_WAIT_SEC(10)
+    DO_RESET({
+        resetSequence();
+    })
+    DO_END()
+    
+}
+
+
+
+
 
 ////////////////
 
