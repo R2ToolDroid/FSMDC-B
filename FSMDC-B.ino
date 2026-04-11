@@ -69,10 +69,10 @@ const ServoSettings servoSettings[] PROGMEM = {
     { 5,  1000, 2100, GROUP_DOORS|PANEL_GROUP_5|BIG_DOOR_GROUP },    /* 4: DOOR_RIGHT */
     { 6,  600, 2500, 0 },             /* 5: UPPER_ARM */
     { 7,  600, 2500, 0 },             /* 6: LOWER_ARM */
-    { 8,  800, 2050, 0 },            /* 7: GRIPP_LIFT */
-    { 9,  1000, 1400, 0 },            /* 8: GRIPP_CLAW */
-    { 10, 1100, 900, 0 },            /* 9: CPUARM_EXTEND */
-    { 11, 800, 2050, 0 },            /* 10:CPUARM_LIFT */
+    { 8,  700, 1800, 0 },            /* 7: GRIPP_LIFT */
+    { 9,  900, 1300, 0 },            /* 8: GRIPP_CLAW */
+    { 10, 900, 1800, 0 },            /* 9: CPUARM_EXTEND */
+    { 11, 800, 1500, 0 },            /* 10:CPUARM_LIFT */
     { 12, 2100, 1000, DRAWER_GROUP|DRAWER_GROUP_1 }, /* 11:DRAWER_1 */
     { 13, 2100, 1000, DRAWER_GROUP|DRAWER_GROUP_2 }, /* 12:DRAWER_2 */ 
     { 14, 2100, 1000, DRAWER_GROUP|DRAWER_GROUP_3 }, /*|13:DRAWER_3 */ 

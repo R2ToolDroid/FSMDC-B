@@ -325,10 +325,12 @@ MARCDUINO_ANIMATION(GripperArmON, #GAON)
     DO_ONCE_AND_WAIT({
         servoDispatch.moveTo(GRIPP_LIFT, 50, 500, 1.0);
         servoDispatch.moveTo(GRIPP_CLAW, 50, 500, 1.0); 
-    }, 3000)
+    }, 2000)
     DO_ONCE({
         servoDispatch.moveTo(GRIPP_CLAW, 50, 500, 0.0); 
     })
+    
+    
     DO_END()
 }
 
