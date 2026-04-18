@@ -50,6 +50,7 @@ MARCDUINO_ANIMATION(FlutterAllPanels, #OF00){
      DO_RESET({
         dataPanel.setSequence(DataPanel::kDisabled);
         chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+        resetSequence();
     })
     DO_END()
     
