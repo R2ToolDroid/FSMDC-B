@@ -19,15 +19,15 @@ MARCDUINO_ACTION(CloseAllPanelsMD, :CL00, ({
 
 MARCDUINO_ACTION(OpenAllPanels, #OP00, ({
     SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpenLong, GROUP_DOORS);
-    dataPanel.setSequence(DataPanel::kNormal);
-    chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
+    //dataPanel.setSequence(DataPanel::kNormal);
+    //chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
    DEBUG_PRINTLN("OPEN ALL"); 
 }))
 
 MARCDUINO_ACTION(OpenAllPanelsMD, :OP00, ({
     SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpenLong, GROUP_DOORS);
-    dataPanel.setSequence(DataPanel::kNormal);
-    chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
+    //dataPanel.setSequence(DataPanel::kNormal);
+    //chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
     
    DEBUG_PRINTLN("OPEN ALL"); 
 }))
@@ -48,8 +48,8 @@ MARCDUINO_ANIMATION(FlutterAllPanels, #OF00){
     ),8000)
     
      DO_RESET({
-        dataPanel.setSequence(DataPanel::kDisabled);
-        chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+        //dataPanel.setSequence(DataPanel::kDisabled);
+       // chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
         resetSequence();
     })
     DO_END()
@@ -71,7 +71,7 @@ MARCDUINO_ACTION(OpenPanelGroup1, #OP01, ({
 MARCDUINO_ACTION(OpenPanelGroup2, #OP02, ({
     //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DOOR_DATAPANEL);
     servoDispatch.setServoEasingMethod(DOOR_DATAPANEL, Easing::CircularEaseIn);
-    dataPanel.setSequence(DataPanel::kNormal);
+    //dataPanel.setSequence(DataPanel::kNormal);
     servoDispatch.moveTo(DOOR_DATAPANEL, 150, 500, 1.0); // completely open
 }))
 
@@ -79,7 +79,7 @@ MARCDUINO_ACTION(OpenPanelGroup2, #OP02, ({
 
 MARCDUINO_ACTION(OpenPanelGroup3, #OP03, ({
     //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DOOR_CHARGEBAY);
-    chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
+    //chargeBayIndicator.setSequence(ChargeBayIndicator::kNormal);
     servoDispatch.setServoEasingMethod(DOOR_CHARGEBAY, Easing::CircularEaseIn);
     servoDispatch.moveTo(DOOR_CHARGEBAY, 150, 500, 1.0); // completely open
 }))
@@ -87,7 +87,7 @@ MARCDUINO_ACTION(OpenPanelGroup3, #OP03, ({
 
 MARCDUINO_ACTION(OpenPanelAndHeard, #HEARD, ({
     //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DOOR_CHARGEBAY);
-    chargeBayIndicator.setSequence(ChargeBayIndicator::kHeart);
+    //chargeBayIndicator.setSequence(ChargeBayIndicator::kHeart);
     servoDispatch.setServoEasingMethod(DOOR_CHARGEBAY, Easing::CircularEaseIn);
     servoDispatch.moveTo(DOOR_CHARGEBAY, 150, 500, 1.0); // completely open
 }))
@@ -123,7 +123,7 @@ MARCDUINO_ACTION(ClosePanelGroup2, #CL02, ({
     //SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllClose, DOOR_DATAPANEL);
     servoDispatch.setServoEasingMethod(DOOR_DATAPANEL, Easing::CircularEaseIn);
     servoDispatch.moveTo(DOOR_DATAPANEL, 150, 500, 0.0); // completely close
-    dataPanel.setSequence(DataPanel::kDisabled);
+   //dataPanel.setSequence(DataPanel::kDisabled);
 }))
 
 ////////////////
@@ -133,7 +133,7 @@ MARCDUINO_ACTION(ClosePanelGroup3, #CL03, ({
     servoDispatch.setServoEasingMethod(DOOR_CHARGEBAY, Easing::CircularEaseIn);
     servoDispatch.moveTo(DOOR_CHARGEBAY, 150, 500, 0.0); // completely close
     
-    chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled);
+    //chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled);
 }))
 
 ////////////////
@@ -152,150 +152,8 @@ MARCDUINO_ACTION(ClosePanelGroup5, #CL05, ({
     servoDispatch.moveTo(DOOR_RIGHT, 150, 500, 0.0); // completely close
 }))
 
-//////////////////
-///// ARMS SECTION
-//////////////////
-
-MARCDUINO_ACTION(OpenUpperArm, #OPUA, ({
-    OpenUpperArm();
-}))
-
-////////////////
-
-MARCDUINO_ACTION(OpenLowerArm, #OPLA, ({
-    OpenLowerArm();
-}))
-
-MARCDUINO_ACTION(CloseUpperArm, #CLUA, ({
-    CloseUpperArm();
-}))
-
-////////////////
-
-MARCDUINO_ACTION(CloseLowerArm, #CLLA, ({
-    CloseLowerArm();
-}))
 
 
-MARCDUINO_ACTION(LiftGripperArm, #LGA, ({
-    GrippLift();
-}))
-
-MARCDUINO_ACTION(DownGripperArm, #DGA, ({
-    GrippDown();
-}))
-
-MARCDUINO_ACTION(CloseClaw, #CC, ({
-    CloseClaw();
-}))
-
-MARCDUINO_ACTION(OpenClaw, #OC, ({
-    OpenClaw();
-}))
-
-MARCDUINO_ACTION(CPUArmLift, #CPUL, ({
-    CPUArmLift();
-}))
-
-MARCDUINO_ACTION(CPUArmDown, #CPUD, ({
-    CPUArmDown();
-}))
-
-MARCDUINO_ACTION(CPUArmON, #CPU1, ({
-    CPUArmON();
-}))
-
-MARCDUINO_ACTION(CPUArmOFF, #CPU0, ({
-    CPUArmOFF();
-}))
-
-
-
-
-
-//////////////////
-////DRAWER SECTION
-//////////////////  
-
-////////////////
-
-MARCDUINO_ACTION(OpenDrawerAll, #OPD0, ({
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DRAWER_GROUP);
-}))
-
-
-////////////////
-
-MARCDUINO_ACTION(OpenDrawerGroup1, #OPD1, ({
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DRAWER_GROUP_1);
-}))
-
-////////////////
-
-MARCDUINO_ACTION(OpenDrawerGroup2, #OPD2, ({
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DRAWER_GROUP_2);
-}))
-
-////////////////
-
-MARCDUINO_ACTION(OpenDrawerGroup3, #OPD3, ({
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DRAWER_GROUP_3);
-}))
-
-////////////////
-
-MARCDUINO_ACTION(OpenDrawerGroup4, #OPD4, ({
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllOpen, DRAWER_GROUP_4);
-}))
-
-////////////////
-
-MARCDUINO_ACTION(CloseDrawerAll, #CLD0, ({
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllClose, DRAWER_GROUP);
-}))
-
-////////////////
-
-MARCDUINO_ACTION(CloseDrawerGroup1, #CLD1, ({
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllClose, DRAWER_GROUP_1);
-}))
-
-////////////////
-
-MARCDUINO_ACTION(CloseDrawerGroup2, #CLD2, ({
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllClose, DRAWER_GROUP_2);
-}))
-
-////////////////
-
-MARCDUINO_ACTION(CloseDrawerGroup3, #CLD3, ({
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllClose, DRAWER_GROUP_3);
-}))
-
-////////////////
-
-MARCDUINO_ACTION(CloseDrawerGroup4, #CLD4, ({
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllClose, DRAWER_GROUP_4);
-}))
-/*
-MARCDUINO_ACTION(ClosePanelGroup10, :CL10, ({
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllClose, PANEL_GROUP_10);
-}))
-
-////////////////
-
-MARCDUINO_ACTION(CloseTopPanels, :CL11, ({
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllClose, PIE_PANEL);
-}))
-
-////////////////
-
-MARCDUINO_ACTION(CloseBottomPanels, :CL12, ({
-    SEQUENCE_PLAY_ONCE(servoSequencer, SeqPanelAllClose, DOME_PANELS_MASK);
-}))
-
-////////////////
-*/
 
 MARCDUINO_ACTION(FlutterPanelGroup1, #OF01, ({
     SEQUENCE_PLAY_ONCE_VARSPEED(servoSequencer, SeqPanelAllFlutter, PANEL_GROUP_1 , 10, 50);
@@ -327,20 +185,6 @@ MARCDUINO_ACTION(FlutterPanelGroup5, #OF05, ({
     SEQUENCE_PLAY_ONCE_VARSPEED(servoSequencer, SeqPanelAllFlutter, PANEL_GROUP_5 , 10, 50);
 }))
 
-MARCDUINO_ACTION(FireOut, FOUT, ({
-     //servoDispatch.moveToPulse(FIRE, 150, 100, 800); // Einzenelner Servo
-     FireOut();
-}))
-
-MARCDUINO_ACTION(FireIN, FIN, ({
-   // servoDispatch.moveToPulse(FIRE, 150, 100, 1800); // Einzenelner Servo
-   FireIn();
-}))
-
-MARCDUINO_ACTION(FireStop, #F0, ({
-   // servoDispatch.moveToPulse(FIRE, 150, 100, 1800); // Einzenelner Servo
-   FireStop();
-}))
 
 /*////FIRESTOP test/////////
 
@@ -370,24 +214,6 @@ MARCDUINO_ACTION(FireStop5, 5, ({
 
 */
 
-MARCDUINO_ACTION(SprayON, #SP1, ({
-    //servoDispatch.moveToPulse(SPRAY, 150, 100, 800); // Einzenelner Servo
-    servoDispatch.moveTo(SPRAY, 50, 50, 1.0);
-}))
-
-MARCDUINO_ACTION(SprayOFF, #SP0, ({
-    ///servoDispatch.moveToPulse(SPRAY, 150, 100, 1800); // Einzenelner Servo
-    servoDispatch.moveTo(SPRAY, 50, 50, 0.0);
-}))
-
-
-MARCDUINO_ACTION(LOCK, lock, ({
-    Lock();
-}))
-
-MARCDUINO_ACTION(UN_LOCK, unlock, ({
-    Unlock();
-}))
 
 
 ////////////////

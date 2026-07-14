@@ -25,8 +25,8 @@ MARCDUINO_ANIMATION(ScreamSequence, :SE01){
     ),8000)
     
      DO_RESET({
-        dataPanel.setSequence(DataPanel::kDisabled);
-        chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+        //dataPanel.setSequence(DataPanel::kDisabled);
+        //chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
     })
     
      DO_END() 
@@ -49,8 +49,8 @@ MARCDUINO_ANIMATION(WaveSequence, :SE02){
     ),8000)
     
      DO_RESET({
-        dataPanel.setSequence(DataPanel::kDisabled);
-        chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+        //dataPanel.setSequence(DataPanel::kDisabled);
+        //chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
     })
     DO_END()
 
@@ -71,8 +71,8 @@ MARCDUINO_ANIMATION(SmirkWaveSequence, :SE03){
     ),8000)
     
      DO_RESET({
-       dataPanel.setSequence(DataPanel::kDisabled);
-       chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+       //dataPanel.setSequence(DataPanel::kDisabled);
+       //chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
     })
       
     DO_END()       
@@ -95,8 +95,8 @@ MARCDUINO_ANIMATION(OpenCloseWaveSequence, :SE04 ){
      DO_WAIT_SEC(5)
     
      DO_RESET({
-        dataPanel.setSequence(DataPanel::kDisabled);
-        chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+        //dataPanel.setSequence(DataPanel::kDisabled);
+        //chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
     })
 
     DO_END()
@@ -120,8 +120,8 @@ MARCDUINO_ANIMATION(BeepCantinaSequence, :SE05)
     ),8000)
     
      DO_RESET({
-        dataPanel.setSequence(DataPanel::kDisabled);
-        chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
+        //dataPanel.setSequence(DataPanel::kDisabled);
+        //chargeBayIndicator.setSequence(ChargeBayIndicator::kDisabled); 
     })
  
     DO_END()
@@ -314,120 +314,12 @@ MARCDUINO_ANIMATION(RythmicPanelSequence, :SE57) {
 
 
 
-////////////////
-
-MARCDUINO_ANIMATION(GripperArmON, #GAON)
-{
-  DO_START()
-  DO_ONCE_AND_WAIT({
-        servoDispatch.moveTo(DOOR_LEFT, 50, 500, 1.0); 
-    }, 1000)
-    DO_ONCE_AND_WAIT({
-        servoDispatch.moveTo(GRIPP_LIFT, 50, 500, 1.0);
-        servoDispatch.moveTo(GRIPP_CLAW, 50, 500, 1.0); 
-    }, 2000)
-    DO_ONCE({
-        servoDispatch.moveTo(GRIPP_CLAW, 50, 500, 0.0); 
-    })
-    
-    
-    DO_END()
-}
-
-MARCDUINO_ANIMATION(FireON, #FION)
-{
-  DO_START()
-  DO_ONCE_AND_WAIT({
-        servoDispatch.moveTo(DOOR_MINI, 50, 500, 1.0); 
-    }, 1000)
-    
-    DO_ONCE({
-        FireOut();
-    })
-    DO_WAIT_MILLIS(500)
-    DO_ONCE({
-        FireOut();
-    })
-    DO_WAIT_MILLIS(300)
-    
-    DO_ONCE({
-        FireStop();
-    })   
-    DO_END()
-}
-
-MARCDUINO_ANIMATION(FireOFF, #FIOFF)
-{
-  DO_START()
-
-  DO_ONCE({
-        FireIn();
-    })
-    DO_WAIT_MILLIS(500)
-    DO_ONCE({
-        FireIn();
-    })
-    DO_WAIT_MILLIS(500)
-    DO_ONCE({
-        FireStop();
-    })
-    DO_WAIT_MILLIS(1500)
-    
-     
-    DO_ONCE({
-        servoDispatch.moveTo(DOOR_MINI, 50, 500, .0); 
-    })
-    DO_END()
-}
-
-
-MARCDUINO_ANIMATION(Spray,#SPRAY)
-{
-  DO_START()
-
-  DO_ONCE({
-        servoDispatch.moveTo(SPRAY, 50, 50, 1.0);
-    })
-    DO_WAIT_MILLIS(500)
-    
-    DO_ONCE({
-        servoDispatch.moveTo(SPRAY, 50, 50, 0.0);
-    })
-    
-    DO_END()
-}
 
 
 
-MARCDUINO_ANIMATION(SrewArmON, #SAON)
-{
-  DO_START()
-  DO_ONCE_AND_WAIT({
-        servoDispatch.moveTo(DOOR_RIGHT, 50, 100, 1.0); 
-    }, 1000)
-    DO_ONCE_AND_WAIT({
-        //servoDispatch.moveTo(CPUARM_LIFT, 50, 500, 1.0);
-        CPUArmLift();
-    }, 3000)
-    DO_ONCE({
-        //servoDispatch.moveTo(CPUARM_EXTEND, 50, 50, 1.0);
-        CPUArmON(); 
-    })
-    DO_WAIT_MILLIS(500)
-    DO_ONCE({
-        CPUArmOFF();
-    })
-    DO_WAIT_MILLIS(500)
-    DO_ONCE({
-       CPUArmON(); 
-    })
-    DO_WAIT_MILLIS(500)
-    DO_ONCE({
-       CPUArmOFF(); 
-    })
-    
-    DO_END()
-}
+
+
+
 
 /*
 MARCDUINO_ANIMATION(HarlemShakeSequence, ARML)
