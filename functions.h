@@ -1,6 +1,3 @@
-
-
-
 void resetSequence()
 {
    if (LOCK == true) {return;}
